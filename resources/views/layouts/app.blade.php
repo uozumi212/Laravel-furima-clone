@@ -10,10 +10,9 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://use.fontawesome.com/releases/v6.5.1/css/all.css" rel="stylesheet">
+{{--        <script src="{{ mix('js/app.js') }}" defer></script>--}}
 
-{{--        <link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">--}}
-
-
+{{--        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>--}}
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">

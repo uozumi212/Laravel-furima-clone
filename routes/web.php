@@ -31,18 +31,26 @@ Route::get('/products/{id}/purchase', [ProductsController::class, 'purchase'])->
 //    return view('vue');
 //});
 
-Route::get('/', function () {
-    return view('welcome');
+//Route::get('/', function () {
+//    return view('welcome');
+//});
+
+Route::get('/vue', function () {
+    return view('vue');
 });
+
 
 Route::get('/contact/index', [ContactController::class,'index'])->name('contact.index');
 Route::post('/contact', [ContactController::class, 'sendMail'])->name('contact');
 //Route::get('/contact/complete', [ContactController::class,'index'])->name('contact');
 Route::post('/contact/complete', [ContactController::class,'complete'])->name('contact.complete');
 
-Route::post('/product/{id}/add-to-favorites', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
+//Route::post('/product/{id}/add-to-favorites', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
+//
+//Route::delete('/product/{id}/remove-from-favorites', [FavoriteController::class, 'removeFromFavorites'])->name('product.remove_from_favorites');
 
-Route::delete('/product/{id}/remove-from-favorites', [FavoriteController::class, 'removeFromFavorites'])->name('product.remove_from_favorites');
+Route::post('/product/{id}/add_to_favorites', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
+Route::delete('/product/{id}/remove-from-favorites', [FavoriteController::class,'removeFromFavorites'])->name('product.remove_from_favorites');
 
 
 //Route::get('/dashboard', function () {
