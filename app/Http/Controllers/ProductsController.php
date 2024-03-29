@@ -16,10 +16,10 @@ class ProductsController extends Controller
         //商品一覧
 //        $products = Product::all();
 
-//        $products = Product::paginate(10);
         $query = Product::query();
 
         $search = $request->input('search');
+        $products = $query->orderBy('id', 'desc')->paginate(10);
 
         if ($search) {
             $products = Product::where('name', 'LIKE', "%$search%")->paginate(10);
@@ -27,7 +27,7 @@ class ProductsController extends Controller
             $products = Product::paginate(10);
         }
 
-        $products = $query->orderBy('id', 'desc')->paginate(10);
+//        $products = $query->orderBy('id', 'desc')->paginate(10);
 
         $products->load('user');
         return view (
@@ -112,7 +112,33 @@ class ProductsController extends Controller
     {
         //
         $product = Product::find($id);
-        $product->fill($request->all())->save();
+        if (!$product) {
+            return redirect()->route('product.index')->with('error', '商品が見つかりませんでした');
+        }
+        // 2. 画像がアップロードされた場合は新しい画像を保存
+        if ($request->hasFile('image')) {
+            $request->validate([
+                'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            ]);
+
+            $imageName = time(). '.' . $request->image->extension();
+            $request->image->move(public_path('storage/images'), $imageName);
+
+            // 既存の画像を削除
+            if (file_exists(public_path('storage/images/' . $product->image))) {
+                unlink(public_path('storage/images/' . $product->image));
+            }
+
+            $product->image = $imageName;
+        }
+
+        // 3. フォームから送信されたデータで商品情報を更新
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->price = $request->price;
+
+        // 4. 更新を保存
+        $product->save();
 
         return redirect()->route('product.index')->with('message', '編集しました');
     }
@@ -143,7 +169,8 @@ class ProductsController extends Controller
     public function purchase($id) {
         $product = Product::findOrFail($id);
 
-        return redirect()->route('product.index')->with('message', '商品を購入しました');
+//        return redirect()->route('product.index')->with('message', '商品を購入しました');
+        return view('purchase',compact('product'));
     }
 
 }

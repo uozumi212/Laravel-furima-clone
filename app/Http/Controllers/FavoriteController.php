@@ -7,28 +7,32 @@ use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    //
-         public function addToFavorites($id) {
-//        $product = Product::findOrFail($id);
 
-        $product = Product::find($id);
 
-//          $product = Product::find($productId);
+    public function checkFavoriteStatus($id)
+    {
+        // ログインしているユーザーのIDを取得
+        $userId = auth()->id();
 
-        if (!$product) {
-            return redirect()->back()->with('error', '指定された商品が見つかりませんでした');
-//            return response()->json(['error' => '指定された商品が見つかりませんでした'], 404);
-        }
+        // ユーザーが指定された商品をお気に入りに登録しているかどうかを確認
+        $isFavorite = Favorite::where('user_id', $userId)
+            ->where('favoritable_id', $id)
+            ->exists();
 
+        // レスポンスとしてお気に入りの状態を返す
+        return response()->json(['isFavorite' => $isFavorite]);
+    }
+
+
+    public function addToFavorites($id) {
+//        auth()->user()->favorites()->attach($product->id);
         auth()->user()->favorites()->create([
-            'favoritable_id' =>  $id,
-//            'favoritable_type' => 'App\Models\Product',
+            'favoritable_id' => $id,
             'favoritable_type' => Product::class,
         ]);
 
-        return redirect()->back()->with('message', '商品をお気に入りに追加しました');
-//             return response()->json(['message' => '商品をお気に入りに追加しました'], 200);
-//             return response()->json(['success' => true]);
+        return response()->json($id);
+
     }
 
     public function removeFromFavorites($id)
@@ -41,20 +45,16 @@ class FavoriteController extends Controller
 
             // ユーザーのお気に入りを取得
             $favorite = auth()->user()->favorites()->where('favoritable_id', $id)->first();
-//            $id = $request->input('id');
-//            $favorite = auth()->user()->favorites()->where('favoritable_id', $id)->first();
 
             if ($favorite) {
                 $favorite->delete();
-                return redirect()->back()->with('message', '商品をお気に入りから削除しました');
-//                return response()->json(['message' => '商品をお気に入りから削除しました'], 200);
-//                return response()->json(['success' => true]);
+
+                return response()->json($favorite);
+
             } else {
                 return redirect()->back()->with('error', '指定されたお気に入りが見つかりません');
             }
 
-            // お気に入りを削除
-//            $favorite->delete();
 
 //            return redirect()->back()->with('message', '商品をお気に入りから削除しました');
         } catch (\Exception $e) {
@@ -62,15 +62,5 @@ class FavoriteController extends Controller
             return redirect()->back()->with('error', '指定されたお気に入りが見つかりませんでした');
         }
     }
-//    public function removeFromFavorites($id) {
-////        logger($id);
-//        try {
-//            $favorite = auth()->user()->favorites()->findOrFail($id);
-//            $favorite->delete();
-//            return redirect()->back()->with('message', '商品をお気に入りから削除しました');
-//        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-////            return redirect()->back()->with('error', '指定されたお気に入りが見つかりませんでした');
-//            return redirect()->back()->with('error', $e->getMessage());
-//        }
-//    }
+
 }

@@ -29,6 +29,7 @@ class ContactAdminMail extends Mailable
         return new Envelope(
 //            from: $this->contactInfo['email'],
             from: new Address($this->contactInfo['email'], $this->contactInfo['name']),
+//            from: 'no-reply@example.com',
             subject: 'お問い合わせがありました',
         );
     }
@@ -36,10 +37,10 @@ class ContactAdminMail extends Mailable
     /**
      * Get the message content definition.
      */
-    public function content(): Content
+    public function content()
     {
         return new Content(
-            text: 'emails.contact.admin',
+            text: 'view.name',
         );
     }
 

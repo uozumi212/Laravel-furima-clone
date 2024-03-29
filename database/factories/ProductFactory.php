@@ -31,7 +31,7 @@ class ProductFactory extends Factory
 //            'image' => $imagePath,
             'description' => $this->faker->text(100),
 //            'user_id' => \App\Models\User::factory(),
-            'user_id' => $this->faker->randomElement([1,2]),
+            'user_id' => $this->faker->randomElement([1,2,13]),
 //            'user_id' => User::factory()->create()->id,
         ];
     }

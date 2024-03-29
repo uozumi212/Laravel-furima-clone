@@ -1,36 +1,24 @@
-<!--<script src="../app.js"></script>-->
-<!--<template>-->
-<!--    　　<div class="container">-->
-<!--    　　　　<div class="row justify-content-center">-->
-<!--    　　　　　　<div class="col-md-8">-->
-<!--    　　　　　　　<div class="card">-->
-<!--    　　　　　　　　　<div class="card-header">Example Component</div>-->
-
-<!--    　　　　　　　　　<div class="card-body">-->
-<!--    　　　　　　　　　　I'm an example component.-->
-<!--    　　　　　　　　　</div>-->
-<!--    　　　　　　　</div>-->
-<!--    　　　　　　</div>-->
-<!--    　　　　</div>-->
-<!--    　　</div>-->
-<!--</template>-->
-
-<!--<script>-->
-<!--export default {-->
-<!--    mounted() {-->
-<!--    }-->
-<!--}-->
-<!--</script>-->
 <template>
-<div class="row justify-content-center">
-<ul>
-    <li v-for="test in tests" :key="test.id">{{test.title}}</li>
-</ul>
-</div>
+    <div id="app">
+        <button @click="count++">
+            Count is: {{ count }}
+        </button>
+        <div class="row justify-content-center">
+            <ul>
+                <li v-for="test in tests" :key="test.id">{{ test.title }}</li>
+            </ul>
+        </div>
+    </div>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+
+const count = ref(0)
+</script>
 
 <script>
 export default {
-    props:["tests"]
+    props: ["tests"]
 }
 </script>

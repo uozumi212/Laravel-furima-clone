@@ -34,9 +34,9 @@
         </div>
         @endif
 
-      <form action="{{ route('contact') }}" method="POST" class="mt-4 w-auto">
+      <form action="{{ route('contact.complete') }}" method="POST" class="container mt-4 w-50">
           @csrf
-        <div class="mb-4 form-group">
+        <div class="mb-4 form-group justify-content-center">
 {{--          <label for="name" class="form-label">お名前<span class="text-white text-xs bg-yellow-400 mx-2 py-1 px-2">必須</span></label>--}}
           <input id="name" class="form-control" type="text" placeholder="名前" aria-label="名前" name="name" value="{{ old('name') }}">
 {{--            @if($errors->has('name'))--}}

@@ -17,3 +17,4 @@
 //         isFavorite: false // 必要に応じて isFavorite を初期化
 //     };
 // }
+Vue.config.devtools = true;

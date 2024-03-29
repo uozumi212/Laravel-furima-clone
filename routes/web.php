@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\PurchaseController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,51 +19,55 @@ use App\Http\Controllers\FavoriteController;
 |
 */
 
-Route::resource('product', ProductsController::class);
-
-Route::get('/products/{id}/purchase', [ProductsController::class, 'purchase'])->name('purchase');
 
 
 
-//Route::get('adminlte', function () {
-//    return view('adminlte');
-//});
+Route::get('adminlte', function () {
+    return view('adminlte');
+});
 
-//Route::get('/vue', function () {
-//    return view('vue');
-//});
-
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
-Route::get('/vue', function () {
-    return view('vue');
+Route::post('forgot-password', function () {
+    return view('forgot-password');
 });
 
 
-Route::get('/contact/index', [ContactController::class,'index'])->name('contact.index');
-Route::post('/contact', [ContactController::class, 'sendMail'])->name('contact');
-//Route::get('/contact/complete', [ContactController::class,'index'])->name('contact');
-Route::post('/contact/complete', [ContactController::class,'complete'])->name('contact.complete');
-
-//Route::post('/product/{id}/add-to-favorites', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
-//
-//Route::delete('/product/{id}/remove-from-favorites', [FavoriteController::class, 'removeFromFavorites'])->name('product.remove_from_favorites');
-
-Route::post('/product/{id}/add_to_favorites', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
-Route::delete('/product/{id}/remove-from-favorites', [FavoriteController::class,'removeFromFavorites'])->name('product.remove_from_favorites');
+Route::get('/', function () {
+    return view('welcome');
+})->middleware('auth');
 
 
-//Route::get('/dashboard', function () {
-//    return view('dashboard');
-//})->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/contact/index', [ContactController::class,'index'])->name('contact.index');
+    Route::post('/contact', [ContactController::class, 'sendMail'])->name('contact');
+    Route::post('/contact/complete', [ContactController::class,'complete'])->name('contact.complete');
+
+    Route::get('/product/{id}/favorite', [FavoriteController::class, 'checkFavoriteStatus']);
+    Route::post('/product/{id}/favorite', [FavoriteController::class, 'addToFavorites'])->name('product.add_to_favorites');
+    Route::delete('/product/{id}/favorite', [FavoriteController::class,'removeFromFavorites'])->name('product.remove_from_favorites');
+
+    Route::resource('product', ProductsController::class);
+
+
+    Route::get('/purchase/{id}', [ProductsController::class, 'purchase'])->name('purchase');
+    Route::get('/purchase/{id}', [PurchaseController::class, 'show'])->name('purchase.show');
+
+
+    Route::post('/purchase', [PurchaseController::class, 'store'])->name('purchase.store');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    });
+
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+
 
 
 require __DIR__.'/auth.php';

@@ -61,7 +61,7 @@
                         <td style="width: 40%;">{{ $product->description }}</td>
                         <td style="width: 7%;">
                                 <div>
-                                    <form action="{{ route('purchase', $product->id) }}" method="post">
+                                    <form action="{{ route('purchase.store', $product->id) }}" method="post">
                                         @csrf
                                         {{-- 簡易的に確認メッセージを表示 --}}
                                         <button type="submit" class="btn btn-success"
@@ -74,15 +74,16 @@
                         </td>
                     </tr>
 
+
                 </tbody>
             </table>
+            <div class="card-footer">
+                <div class="row">
+                    <a class="btn btn-default" href="{{ route('product.index') }}" role="button">戻る</a>
+                </div>
+            </div>
         </div>
 
-        {{-- ページネーション --}}
-{{--        @if ($products->hasPages())--}}
-{{--            <div class="card-footer clearfix">--}}
-{{--                {{ $products->links() }}--}}
-{{--            </div>--}}
-{{--        @endif--}}
+
     </div>
 @stop

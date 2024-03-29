@@ -33,10 +33,10 @@ class ContactRequest extends FormRequest
 
     public function attributes() {
         return [
-            'name' => 'お名前',
-            'name_kana' => '名前(フリガナ)',
-            'phone' => '電話番号',
-            'email' => 'メールアドレス',
+//            'name' => 'お名前',
+//            'name_kana' => '名前(フリガナ)',
+//            'phone' => '電話番号',
+//            'email' => 'メールアドレス',
             'body' => 'お問い合わせ内容'
         ];
     }
